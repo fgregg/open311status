@@ -1,7 +1,10 @@
 var pingedAt = new Date();
 
+var async        = require('async');
+
 var db           = require('./database.js')
-    ServicesPing = db.models.ServicesPing;
+  , ServicesPing = db.models.ServicesPing
+  , RequestsPing = db.models.RequestsPing;  ;
 
 var Endpoints = require('./lib/endpoints')
   , endpoints = []
@@ -17,11 +20,30 @@ var options = {
   createdAt: pingedAt
 }
 
-ServicesPing.pingAll(endpoints, options, function(err, endpoints) {
-  var timer = new Date().getTime() - pingedAt.getTime();
-  console.log('Pinged /services method of', endpoints.length, 'endpoints in', (timer/1000) ,'seconds');
-  process.exit();
-});
+async.parallel({
+    ServicesPing: function(done) {
+      ServicesPing.pingAll(endpoints, options, function(err, endpoints) {
+        var timer = new Date().getTime() - pingedAt.getTime();
+        console.log('Pinged /services method of', endpoints.length, 'endpoints in', (timer/1000) ,'seconds');
+        done();
+      });
+    }
+  , RequestsPing: function(done) {
+      RequestsPing.pingAll(endpoints, options, function(err, endpoints) {
+        var timer = new Date().getTime() - pingedAt.getTime();
+        console.log('Pinged /requests method of', endpoints.length, 'endpoints in', (timer/1000) ,'seconds');
+        done();
+      });
+    }  
+  }
+, function(err) {
+    // Done!
+    process.exit();
+  }
+);
+
+
+
 
 
 // Kill our process if goes too long

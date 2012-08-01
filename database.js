@@ -25,6 +25,9 @@ sequelize.models = {};
 var ServicesPing = sequelize.import(__dirname + "/models/servicesping.js");
 sequelize.models.ServicesPing = ServicesPing;
 
+var RequestsPing = sequelize.import(__dirname + "/models/requestsping.js");
+sequelize.models.RequestsPing = RequestsPing;
+
 // required to deal with this issue:
 // https://github.com/sdepold/sequelize/issues/177
 sequelize.sync();

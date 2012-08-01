@@ -24,12 +24,13 @@ module.exports = function(sequelize, DataTypes) {
 }
 
 var pingOne = function(endpoint, options, callback) {
-  var self          = this
-    , url           = open311.formatUrl(endpoint, 'services')
-    , statusCode    = null
-    , responseTime  = 0
-    , servicesCount = 0
-    , createdAt     = options.createdAt || new Date();
+  var self            = this
+    , url             = open311.formatUrl(endpoint, 'services')
+    , statusCode      = null
+    , responseTime    = 0
+    , servicesCount   = 0
+    , createdAt       = options.createdAt || new Date()
+    , serviceRequests = [];
 
   var reqOptions = {
     url: url
