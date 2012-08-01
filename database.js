@@ -11,19 +11,14 @@ var sequelize = new Sequelize(
     host: db.hostname || 'localhost'
   , port: db.port || 5432
   , dialect  : 'postgres'
+  , logging: false
   }
 );
 
 /** Load the models **/
 sequelize.models = {};
-var User = sequelize.import(__dirname + "/models/user.js");
-sequelize.models.User = User;
-
-var Repo = sequelize.import(__dirname + "/models/repo.js");
-sequelize.models.Repo = Repo;
-
-var Update = sequelize.import(__dirname + "/models/update.js");
-sequelize.models.Update = Update;
+var ServicesPing = sequelize.import(__dirname + "/models/servicesping.js");
+sequelize.models.ServicesPing = ServicesPing;
 
 // required to deal with this issue:
 // https://github.com/sdepold/sequelize/issues/177
