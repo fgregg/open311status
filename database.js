@@ -3,16 +3,21 @@ var Sequelize = require("sequelize")
 
 var db = url.parse(process.env.PG_URL);
 
+var options = {
+    host: db.hostname || 'localhost'
+  , port: db.port || 5432
+  , dialect  : 'postgres'
+  }
+
+if (process.env.NODE_ENV == 'production') {
+  options.logging = false
+}
+
 var sequelize = new Sequelize(
   db.pathname.slice(1)              // database
 , (db.auth.split(':'))[0]           // username
 , (db.auth.split(':'))[1] || ''     // password
-, {
-    host: db.hostname || 'localhost'
-  , port: db.port || 5432
-  , dialect  : 'postgres'
-  , logging: false
-  }
+, options
 );
 
 /** Load the models **/
