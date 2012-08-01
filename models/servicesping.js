@@ -73,7 +73,8 @@ var pingOne = function(endpoint, options, callback) {
     }
     // Save it
     self.create({
-      endpoint       : endpoint.name
+      ping_id        : options.ping_id || null
+    , endpoint       : endpoint.name
     , status_code    : statusCode
     , response_time  : responseTime
     , services_count : servicesCount

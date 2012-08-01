@@ -7,6 +7,7 @@ var options = {
     host: db.hostname || 'localhost'
   , port: db.port || 5432
   , dialect  : 'postgres'
+  , omitNull : true
   }
 
 if (process.env.NODE_ENV == 'production') {
@@ -22,11 +23,19 @@ var sequelize = new Sequelize(
 
 /** Load the models **/
 sequelize.models = {};
+
+var Ping = sequelize.import(__dirname + "/models/ping.js");
+sequelize.models.Ping = Ping;
+
 var ServicesPing = sequelize.import(__dirname + "/models/servicesping.js");
 sequelize.models.ServicesPing = ServicesPing;
 
 var RequestsPing = sequelize.import(__dirname + "/models/requestsping.js");
 sequelize.models.RequestsPing = RequestsPing;
+
+// Relations
+Ping.hasMany(ServicesPing, {as: 'Services', foreignKey: 'ping_id'})
+    .hasMany(RequestsPing, {as: 'Requests', foreignKey: 'ping_id'});
 
 // required to deal with this issue:
 // https://github.com/sdepold/sequelize/issues/177

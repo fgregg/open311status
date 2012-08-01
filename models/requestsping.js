@@ -30,11 +30,12 @@ var pingOne = function(endpoint, options, callback) {
     , statusCode    = null
     , responseTime  = 0
     , requestsCount = 0
-    , createdAt     = options.createdAt || new Date();
+    , createdAt     = options.createdAt || new Date()
+    , everyMin      = options.everyMin || 10;
 
   // Search previous HOUR
   var params = {
-     start_date: new Date(createdAt - 60 * 60 * 1000).toISOString()
+     start_date: new Date(createdAt - (everyMin * 60 * 1000)).toISOString()
    , end_date: createdAt.toISOString()
   };
   var url = open311.formatUrl(endpoint, 'requests', params);
@@ -84,7 +85,8 @@ var pingOne = function(endpoint, options, callback) {
     }
     // Save it
     self.create({
-      endpoint       : endpoint.name
+      ping_id        : options.ping_id || null
+    , endpoint       : endpoint.name
     , status_code    : statusCode
     , response_time  : responseTime
     , requests_count : requestsCount
