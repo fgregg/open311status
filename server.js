@@ -14,8 +14,7 @@ var db           = require('./database.js')
 /** Express Configuration **/
 app.configure(function(){
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.cookieParser());  
+  app.set('view engine', 'ejs');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -31,7 +30,7 @@ app.configure('production', function(){
   io.set('log level', 1); // reduce logging
 });
 
-/** Routes **/
+/** Routes **/ 
 app.get('/', require('./routes/index'));
 app.get('/api/health', require('./routes/health'));
 app.get('/api/status', require('./routes/status'));
