@@ -5,14 +5,14 @@ var db           = require('../database.js')
 
 require('datejs');
 
-var defaultOptions = {
+var options = {
   endDate: new Date()
-, startDate: new Date(this.endDate - (14 * 24 * 60 *60 * 1000)) // go back 2 weeks
+, startDate: (new Date()).addDays(-14) // go back 2 weeks
 }
 
 module.exports = function(req, res) {
   Ping.findAll({
-    where: ['created_at > ? AND created_at < ?', defaultOptions.startDate, defaultOptions.endDate]
+    where: ['created_at > ? AND created_at < ?', options.startDate, options.endDate]
   , order: 'created_at DESC'
   }).complete(function(err, pings) {
     if (err) { console.log(err) }

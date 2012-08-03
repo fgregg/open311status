@@ -1,11 +1,8 @@
-
 var async     = require('async')
   , Endpoints = require('../lib/endpoints');
 
 var Endpoint = require('../models/endpoint.js')
   , ServiceRequest = require('../models/servicerequest.js');
-
-
 
 module.exports = function(req, res) {
   var endpointsData;

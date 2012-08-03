@@ -32,6 +32,10 @@ app.configure('production', function(){
 });
 
 app.get('/', require('./routes/index'));
+app.get('/api/health', require('./routes/health'));
+app.get('/api/status', require('./routes/status'));
+
+
 // app.get('/services/:endpoint', require('./routes/services'));
 // app.get('/servicerequests/:endpoint', require('./routes/servicerequests'));
 
