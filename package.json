@@ -9,6 +9,7 @@
       "express": "2.5.8"
     , "jade": ">= 0.0.1"
     , "ejs": ">=0.7.2"
+    , "pg": ">=0.7.x"
     , "sequelize": ">= 1.x"
     , "request": ">= 2.9"
     , "socket.io": ">0.0.0"
