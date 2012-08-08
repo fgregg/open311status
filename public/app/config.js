@@ -12,13 +12,14 @@ require.config({
     // Libraries.
     jquery: "../assets/js/libs/jquery",
     lodash: "../assets/js/libs/lodash",
-    backbone: "../assets/js/libs/backbone"
+    backbone: "../assets/js/libs/backbone",
+    bootstrap: "../assets/vendor/bootstrap/js/bootstrap"
   },
 
   shim: {
     // Backbone library depends on lodash and jQuery.
     backbone: {
-      deps: ["lodash", "jquery"],
+      deps: ["lodash", "jquery", "bootstrap"],
       exports: "Backbone"
     },
 

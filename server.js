@@ -30,7 +30,7 @@ app.configure('production', function(){
   io.set('log level', 1); // reduce logging
 });
 
-/** Routes **/ 
+/** Routes **/
 app.get('/', require('./routes/index'));
 app.get('/api/health', require('./routes/health'));
 app.get('/api/status', require('./routes/status'));

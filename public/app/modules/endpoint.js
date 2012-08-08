@@ -12,20 +12,13 @@ function(app, Backbone, Repo) {
 
   Endpoint.Collection = Backbone.Collection.extend({
     url: function() {
-      return "/endpoints";
+      return "/api/status";
     },
 
     cache: false,
 
     parse: function(obj) {
-      //Safety check ensuring only valid data is used
-      // if (obj.data.message !== "Not Found") {
-      //   this.status = "valid";
-
-      //   return obj.data;
-      // }
-
-      return obj;
+      return obj.endpoints;
     },
 
     initialize: function(models, options) {
@@ -39,27 +32,38 @@ function(app, Backbone, Repo) {
   Endpoint.Views.Item = Backbone.View.extend({
     template: "endpoint/item",
 
-    tagName: "li",
+    tagName: "tr",
 
     serialize: function() {
       console.log(this.model);
       return { model: this.model };
     },
 
-    // events: {
-    //   click: "changeUser"
-    // },
+    events: {
+      click: "changeEndpoint",
+      "mouseenter .services-info" : "showServicesPop", 
+      "mouseleave .services-info" : "hidePop",
+      "mouseenter .requests-info" : "showRequestsPop", 
+      "mouseleave .requests-info" : "hidePop"    
+    },
 
-    // changeUser: function(ev) {
-    //   var model = this.model;
-    //   var org = app.router.endpoints.city;
-    //   var name = model.get("login");
+    changeEndpoint: function(ev) {
+      var city = this.model.get('name');
 
-    //   app.router.go("org", org, "user", name);
-    // },
+      app.router.go("city", city);
+    },
 
-    cleanup: function() {
-      this.model.off(null, null, this);
+    showServicesPop : function() {
+      this.$(".services-info").popover({title: 'Hello', content: 'World'});    
+      this.$(".services-info").popover('show');        
+    },
+    showRequestsPop : function() {
+      this.$(".requests-info").popover({title: 'Hello', content: 'World'});    
+      this.$(".requests-info").popover('show');        
+    },
+    hidePop : function() {
+      this.$(".info").popover('hide');
+      this.$(".info").popover('hide');   
     },
 
     initialize: function() {
@@ -76,15 +80,12 @@ function(app, Backbone, Repo) {
 
     render: function(manage) {
       this.collection.each(function(endpoint) {
-        this.insertView("ul", new Endpoint.Views.Item({
+        this.insertView("tbody", new Endpoint.Views.Item({
           model: endpoint
         }));
       }, this);
 
-      return manage(this).render().then(function(el) {
-        // Only re-focus if invalid
-        this.$("input.invalid").focus();
-      });
+      return manage(this).render();
     },
 
     initialize: function() {
@@ -93,17 +94,8 @@ function(app, Backbone, Repo) {
       this.collection.on("fetch", function() {
         this.$("ul").parent().html("<img src='/assets/img/spinner-gray.gif'>");
       }, this);
-    },
+    }
 
-    // events: {
-    //   "submit form": "updateOrg"
-    // },
-
-    // updateOrg: function(ev) {
-    //   app.router.go("org", this.$(".org").val());
-
-    //   return false;
-    // }
   });
 
   return Endpoint;

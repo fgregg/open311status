@@ -43,7 +43,7 @@ function(app, Endpoint) {
       app.useLayout("main");
       
       app.layout.setViews({
-        ".endpoints": new Endpoint.Views.List({
+        "#body": new Endpoint.Views.List({
           collection: this.endpoints
         }),
       });
