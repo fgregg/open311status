@@ -22,9 +22,6 @@ function(app, Backbone, Repo) {
     },
 
     initialize: function(models, options) {
-      // if (options) {
-      //   this.city = options.city;
-      // }
       this.fetch();
     }
   });
@@ -35,40 +32,20 @@ function(app, Backbone, Repo) {
     tagName: "tr",
 
     serialize: function() {
-      console.log(this.model);
       return { model: this.model };
     },
 
-    events: {
-      click: "changeEndpoint",
-      "mouseenter .services-info" : "showServicesPop", 
-      "mouseleave .services-info" : "hidePop",
-      "mouseenter .requests-info" : "showRequestsPop", 
-      "mouseleave .requests-info" : "hidePop"    
-    },
-
-    changeEndpoint: function(ev) {
-      var city = this.model.get('name');
-
-      app.router.go("city", city);
-    },
-
-    showServicesPop : function() {
-      this.$(".services-info").popover({title: 'Hello', content: 'World'});    
-      this.$(".services-info").popover('show');        
-    },
-    showRequestsPop : function() {
-      this.$(".requests-info").popover({title: 'Hello', content: 'World'});    
-      this.$(".requests-info").popover('show');        
-    },
-    hidePop : function() {
-      this.$(".info").popover('hide');
-      this.$(".info").popover('hide');   
-    },
-
-    initialize: function() {
+    initialize: function(model, options) {
       this.model.on("change", this.render, this);
-    }
+    },
+    beforeRender: function(manage) {
+      console.log('before render');
+    },
+    afterRender: function(manage) {
+      console.log('after render');
+      // jQuery Plugin
+      // this.$(".services-info").tooltip({title: "hello world"});    
+    },
   });
 
   Endpoint.Views.List = Backbone.View.extend({
@@ -78,24 +55,19 @@ function(app, Backbone, Repo) {
       return { collection: this.collection };
     },
 
-    render: function(manage) {
+    beforeRender: function(manage) {
       this.collection.each(function(endpoint) {
         this.insertView("tbody", new Endpoint.Views.Item({
           model: endpoint
         }));
       }, this);
-
-      return manage(this).render();
     },
-
+    afterRender: function() {
+      console.log('after list render');
+    },
     initialize: function() {
       this.collection.on("reset", this.render, this);
-
-      this.collection.on("fetch", function() {
-        this.$("ul").parent().html("<img src='/assets/img/spinner-gray.gif'>");
-      }, this);
-    }
-
+    },
   });
 
   return Endpoint;
