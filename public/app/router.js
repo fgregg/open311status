@@ -12,7 +12,7 @@ function(app, Endpoint) {
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      "endpoint/:city": "endpoint"
+      // "endpoint/:city": "endpoint"
     },
 
     index: function() {
