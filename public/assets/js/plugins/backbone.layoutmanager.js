@@ -540,7 +540,6 @@ var LayoutManager = Backbone.View.extend({
         var parent = this.__manager__.parent;
         // Used for when inside resolved deferred callbacks.
         var view = this;
-
         // This can be called immediately if the conditions allow, or it will
         // be deferred until a parent has finished rendering.
         var done = function() {
