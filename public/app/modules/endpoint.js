@@ -35,20 +35,19 @@ function(app, Backbone, Repo) {
       return { model: this.model };
     },
 
-    initialize: function(model, options) {
-      this.model.on("change", this.render, this);
-    },
-    beforeRender: function(manage) {
+    beforeRender: function() {
       console.log('before render');
     },
-    afterRender: function(manage) {
+
+    afterRender: function() {
       console.log('after render');
       // jQuery Plugin
       // this.$(".services-info").tooltip({title: "hello world"});    
-    },
+    }
   });
 
   Endpoint.Views.List = Backbone.View.extend({
+    manage: true,
     template: "endpoint/list",
 
     serialize: function() {
@@ -56,18 +55,20 @@ function(app, Backbone, Repo) {
     },
 
     beforeRender: function(manage) {
-      this.collection.each(function(endpoint) {
+       this.collection.each(function(endpoint) {
         this.insertView("tbody", new Endpoint.Views.Item({
           model: endpoint
         }));
       }, this);
     },
+
     afterRender: function() {
       console.log('after list render');
     },
+
     initialize: function() {
       this.collection.on("reset", this.render, this);
-    },
+    }
   });
 
   return Endpoint;
