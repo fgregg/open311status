@@ -35,19 +35,25 @@ function(app, Backbone, Repo) {
       return { model: this.model };
     },
 
-    beforeRender: function() {
-      console.log('before render');
-    },
-
     afterRender: function() {
-      console.log('after render');
-      // jQuery Plugin
-      // this.$(".services-info").tooltip({title: "hello world"});    
-    }
+      this.servicesTooltip();
+      this.responsesTooltip();
+    },
+    
+    servicesTooltip: function() {
+      var tooltip = "Server response: " + this.model.get('ping').services.response_time + 'ms';
+      this.$(".services-info").tooltip({title: tooltip});    
+    },
+    
+    responsesTooltip: function() {
+      console.log(this.model.attributes);
+      var tooltip = "Server response: " + this.model.get('ping').requests.response_time + 'ms';
+      this.$(".requests-info").tooltip({title: tooltip});    
+    },
+    
   });
 
-  Endpoint.Views.List = Backbone.View.extend({
-    manage: true,
+  Endpoint.Views.List = Backbone.View.extend({   
     template: "endpoint/list",
 
     serialize: function() {
@@ -55,15 +61,11 @@ function(app, Backbone, Repo) {
     },
 
     beforeRender: function(manage) {
-       this.collection.each(function(endpoint) {
+      this.collection.each(function(endpoint) {
         this.insertView("tbody", new Endpoint.Views.Item({
           model: endpoint
         }));
       }, this);
-    },
-
-    afterRender: function() {
-      console.log('after list render');
     },
 
     initialize: function() {

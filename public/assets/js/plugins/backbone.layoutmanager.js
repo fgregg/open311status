@@ -128,7 +128,7 @@ var LayoutManager = Backbone.View.extend({
     // Custom template render function.
     view.render = function(done) {
       var viewDeferred = options.deferred();
-      
+
       // Break this callback out so that its not duplicated inside the 
       // following safety try/catch.
       function renderCallback() {
@@ -183,7 +183,7 @@ var LayoutManager = Backbone.View.extend({
     if (append) {
       // Start with an array if none exists.
       partials = this.views[name] = this.views[name] || [];
-      
+
       if (!_.isArray(this.views[name])) {
         // Ensure this.views[name] is an array.
         partials = this.views[name] = [this.views[name]];
@@ -307,6 +307,11 @@ var LayoutManager = Backbone.View.extend({
       // Only call the done function if a callback was provided.
       if (_.isFunction(done)) {
         done.call(root, root.el);
+      }
+
+      if (root.__manager__.handler) {
+        root.__manager__.handler.resolveWith(root, [root.el]);
+        delete root.__manager__.handler;
       }
 
       // If the render was called twice, there is a possibility that the
@@ -557,7 +562,7 @@ var LayoutManager = Backbone.View.extend({
 
         // If the parent is the top most Layout or no handler is present on the
         // parent's manager property, immediately invoke the afterRender.
-        if (!parent.__manager__.parent || !parent.__manager__.handler) {
+        if (!parent || !parent.__manager__.handler) {
           return done.call(this);
         }
 
@@ -577,7 +582,7 @@ var LayoutManager = Backbone.View.extend({
       view._remove = view.remove;
       view.remove = proto.remove;
     }
-    
+
     // Default the prefix to an empty string.
     view._prefix = "";
 
