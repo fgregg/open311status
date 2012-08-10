@@ -3,10 +3,11 @@ define([
   "app",
 
   // Third-party libraries.
-  "backbone"
+  "backbone",
+
 ],
 
-function(app, Backbone, Repo) {
+function(app, Backbone) {
 
   var Endpoint = app.module();
 
@@ -18,6 +19,7 @@ function(app, Backbone, Repo) {
     cache: false,
 
     parse: function(obj) {
+      this.meta = obj;
       return obj.endpoints;
     },
 
@@ -46,7 +48,6 @@ function(app, Backbone, Repo) {
     },
     
     responsesTooltip: function() {
-      console.log(this.model.attributes);
       var tooltip = "Server response: " + this.model.get('ping').requests.response_time + 'ms';
       this.$(".requests-info").tooltip({title: tooltip});    
     },
@@ -72,6 +73,19 @@ function(app, Backbone, Repo) {
       this.collection.on("reset", this.render, this);
     }
   });
+
+  Endpoint.Views.Meta = Backbone.View.extend({
+      template: "endpoint/meta",
+    
+      serialize: function() {
+        return { meta: this.collection.meta || {} };
+      },
+  
+      initialize: function() {
+        // console.log(this.collection);
+        this.collection.on("reset", this.render, this);
+      }
+    });
 
   return Endpoint;
 

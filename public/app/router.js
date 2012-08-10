@@ -3,7 +3,7 @@ define([
   "app",
 
   // Modules.
-  "modules/endpoint"
+  "modules/endpoint",
 ],
 
 function(app, Endpoint) {
@@ -24,9 +24,15 @@ function(app, Endpoint) {
 
       // Set up the users.
       this.endpoints = new Endpoint.Collection();
-      
+            
       app.layout.setViews({
-        "#body": new Endpoint.Views.List({
+        "#navbar": new Backbone.View({
+          template: 'navbar/navbar'
+        }),
+        "#status": new Endpoint.Views.Meta({
+          collection: this.endpoints
+        }),
+        "#endpoints": new Endpoint.Views.List({
           collection: this.endpoints
         }),
       });
